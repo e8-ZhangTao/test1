@@ -1,0 +1,23 @@
+name: vintrace/e2e-testing
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: true
+env:
+  MAGNUM_USER: magnumuser
+  MAGNUM_PWD: "${{ secrets.MAGNUM_PWD }}"
+  VINTRACE_USER: sysadmin
+  VINTRACE_PWD: p
+  DEV_AWS_ACCESS_KEY_ID: "${{ secrets.DEV_AWS_ACCESS_KEY_ID }}"
+  DEV_AWS_SECRET_ACCESS_KEY: "${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}"
+  MYSQL_ROOT_PASSWORD: password
+jobs:
+  trigger_vintrace_core:
+    name: pipeline-vintrace-core
+    uses: "./.github/workflows/pipeline-vintrace-core.yml"
+  trigger_magnum:
+    name: pipeline-magnum
+    uses: "./.github/workflows/pipeline-magnum.yml"
